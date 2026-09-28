@@ -37,6 +37,16 @@ jobs:
       - name: Calcular cobertura
         run: python -m pytest --cov=app --cov-report=term-missing
 
+      - name: Mostrar resumen de pruebas
+        if: always()
+        run: |
+          echo "## 🧪 Resumen de pruebas" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "- Estado de las pruebas: **${{ job.status }}**" >> $GITHUB_STEP_SUMMARY
+          echo "- Python utilizado: **3.12**" >> $GITHUB_STEP_SUMMARY
+          echo "- Framework de pruebas: **pytest**" >> $GITHUB_STEP_SUMMARY
+          echo "- Métrica utilizada: **Cobertura de código**" >> $GITHUB_STEP_SUMMARY
+
   docker:
     needs: pruebas
     runs-on: ubuntu-latest
@@ -47,3 +57,11 @@ jobs:
 
       - name: Construir imagen Docker
         run: docker build -t docker-actividad .
+
+      - name: Mostrar resumen de Docker
+        if: always()
+        run: |
+          echo "## 🐳 Resumen Docker" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "- Imagen: **docker-actividad**" >> $GITHUB_STEP_SUMMARY
+          echo "- Estado de construcción: **${{ job.status }}**" >> $GITHUB_STEP_SUMMARY
